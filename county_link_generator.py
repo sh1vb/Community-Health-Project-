@@ -23,9 +23,11 @@ selected_county = st.selectbox("Select a County:", counties)
 if selected_county:
     county_row = filtered_df[filtered_df['County Name'] == selected_county].iloc[0]
     fips = county_row['County']
-    key = county_row['Key'].replace(" ", "").strip()  # extra safety
+    #key = county_row['Key'].replace(" ", "").strip()  # extra safety
+    key = county_row['Key']
     link = f"https://county-dashboard.uc.r.appspot.com/?county={fips}&key={key}"
 
     st.markdown("### 🔗 Generated Link:")
     st.code(link, language="text")
     st.markdown(f"[Click here to open the dashboard]({link})", unsafe_allow_html=True)
+
