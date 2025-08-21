@@ -5,11 +5,16 @@ import urllib.parse
 # Load your Excel file
 file_path = "County-Key.xlsx"  # Make sure this is in the same folder as the script
 df = pd.read_excel(file_path)
+# Fix FIPS to always be 5 digits
+df['County'] = df['County'].astype(str).str.zfill(5)
+
+# Clean key just in case
+df['Key'] = df['Key'].astype(str).str.strip()
 
 st.set_page_config(page_title="County Dashboard Link Generator", page_icon="🌐")
 
 # App title
-st.title("🌐 County Dashboard Link Generator")
+st.title("🌐 County Sustainability Dashboard Link Generator 🌐")
 
 # Step 1: Select State
 states = sorted(df['State'].unique())
@@ -36,4 +41,5 @@ if selected_county:
     
     # Move the link to a new line, with full key preserved
     st.markdown(f"\n[Click here to open the dashboard]({link})")
+
 
