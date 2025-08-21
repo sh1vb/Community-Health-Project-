@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import urllib.parse
 
 # Load your Excel file
 file_path = "County-Key.xlsx"  # Make sure this is in the same folder as the script
@@ -23,11 +24,16 @@ selected_county = st.selectbox("Select a County:", counties)
 if selected_county:
     county_row = filtered_df[filtered_df['County Name'] == selected_county].iloc[0]
     fips = county_row['County']
-    #key = county_row['Key'].replace(" ", "").strip()  # extra safety
-    key = county_row['Key']
-    link = f"https://county-dashboard.uc.r.appspot.com/?county={fips}&key={key}"
-
+    key = county_row['Key'].strip()
+    
+    # URL-encode the key to handle spaces safely
+    encoded_key = urllib.parse.quote(key)
+    
+    link = f"https://county-dashboard.uc.r.appspot.com/?county={fips}&key={encoded_key}"
+    
     st.markdown("### 🔗 Generated Link:")
     st.code(link, language="text")
-    st.markdown(f"[Click here to open the dashboard]({link})", unsafe_allow_html=True)
+    
+    # Move the link to a new line, with full key preserved
+    st.markdown(f"\n[Click here to open the dashboard]({link})")
 
